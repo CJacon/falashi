@@ -14,15 +14,15 @@ Além do estudo individual, a proposta do aplicativo inclui elementos de gamific
 - Navegação por abas
 - Sistema de cosméticos
 - Perfil do usuário
+- Sistema de moedas
+- Criação de decks de flashcards
 
 ### Em Desenvolvimento
 - Reconhecimento de voz
-- Criação de decks de flashcards
 - Modo Solo
-- Sistema de moedas
+- Multiplayer
 
 ### Planejadas
-- Multiplayer
 - Ranking global
 - Marketplace de decks
 - Sistema de ingressos para partidas competitivas
