@@ -1,21 +1,31 @@
 # Falashi
 
-Aplicativo de flashcards gamificado para estudos utilizando respostas por voz.
+Aplicativo mobile de flashcards gamificado desenvolvido para a disciplina de Engenharia de Aplicações Móveis da Pontifícia Universidade Católica de Minas Gerais (PUC Minas), Campus Poços de Caldas.
 
-## Descrição
+## Sobre o Projeto
 
-O Falashi é um aplicativo mobile que transforma o estudo com flashcards em uma experiência mais dinâmica e interativa. O principal diferencial da aplicação é permitir que o usuário responda às perguntas utilizando a própria voz, tornando o processo de aprendizagem mais natural e envolvente.
+O Falashi tem como objetivo transformar o estudo com flashcards em uma experiência mais dinâmica e interativa. O principal diferencial do aplicativo é permitir que o usuário responda às perguntas utilizando a própria voz, tornando o processo de aprendizagem mais natural e envolvente.
+
+Além do estudo individual, a proposta do aplicativo inclui elementos de gamificação, como sistema de ranking, moedas virtuais, personalização e modos multiplayer.
 
 ## Funcionalidades
 
-- Criação de decks de flashcards
+### Implementadas
 - Navegação por abas
 - Sistema de cosméticos
 - Perfil do usuário
+
+### Em Desenvolvimento
 - Reconhecimento de voz
+- Criação de decks de flashcards
 - Modo Solo
+- Sistema de moedas
+
+### Planejadas
 - Multiplayer
 - Ranking global
+- Marketplace de decks
+- Sistema de ingressos para partidas competitivas
 
 ## Tecnologias Utilizadas
 
@@ -39,7 +49,7 @@ falashi/
 
 ## Status do Projeto
 
-Em desenvolvimento.
+O projeto encontra-se em desenvolvimento e está sendo construído de forma incremental, com atualizações frequentes no repositório.
 
 ## Equipe
 
@@ -47,3 +57,10 @@ Em desenvolvimento.
 - Emilio do Prado Siqueira Cardillo
 - Pedro Couto de Almeida Santos
 - Vinícius Justo Faria Ferreira
+
+## Instituição
+
+Pontifícia Universidade Católica de Minas Gerais (PUC Minas)  
+Campus Poços de Caldas  
+Curso de Ciência da Computação  
+Disciplina: Engenharia de Aplicações Móveis
