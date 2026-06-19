@@ -1,17 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { fetchTopScores } from '../services/database';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { fetchTopScores, updateScore, deleteScore } from '../services/database';
 
 export default function RankingScreen({ navigation }) {
   const [scores, setScores] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingId, setEditingId] = useState(null);
+  const [editingScore, setEditingScore] = useState('');
 
-  useEffect(() => {
+  const loadScores = () => {
     fetchTopScores().then((data) => {
       setScores(data);
       setLoading(false);
     });
+  };
+
+  useEffect(() => {
+    loadScores();
   }, []);
+
+  const startEdit = (item) => {
+    setEditingId(item.id);
+    setEditingScore(String(item.score));
+  };
+
+  const confirmEdit = async (item) => {
+    const newScore = parseInt(editingScore, 10);
+    if (!isNaN(newScore)) {
+      await updateScore(item.id, newScore, item.total);
+    }
+    setEditingId(null);
+    loadScores();
+  };
+
+  const handleDelete = (item) => {
+    Alert.alert(
+      'Remover resultado',
+      `Remover "${item.deck_title}" (${item.score}/${item.total}) do ranking?`,
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Remover',
+          style: 'destructive',
+          onPress: async () => {
+            await deleteScore(item.id);
+            loadScores();
+          },
+        },
+      ]
+    );
+  };
 
   const medals = ['🥇', '🥈', '🥉'];
 
@@ -41,7 +79,32 @@ export default function RankingScreen({ navigation }) {
                   {new Date(item.played_at).toLocaleDateString('pt-BR')}
                 </Text>
               </View>
-              <Text style={styles.score}>{item.score}/{item.total}</Text>
+
+              {editingId === item.id ? (
+                <TextInput
+                  style={styles.editInput}
+                  value={editingScore}
+                  onChangeText={setEditingScore}
+                  keyboardType="numeric"
+                  autoFocus
+                  onSubmitEditing={() => confirmEdit(item)}
+                />
+              ) : (
+                <Text style={styles.score}>{item.score}/{item.total}</Text>
+              )}
+
+              {editingId === item.id ? (
+                <TouchableOpacity onPress={() => confirmEdit(item)} style={styles.actionIcon}>
+                  <Text style={styles.actionIconText}>✅</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={() => startEdit(item)} style={styles.actionIcon}>
+                  <Text style={styles.actionIconText}>✏️</Text>
+                </TouchableOpacity>
+              )}
+              <TouchableOpacity onPress={() => handleDelete(item)} style={styles.actionIcon}>
+                <Text style={styles.actionIconText}>🗑️</Text>
+              </TouchableOpacity>
             </View>
           )}
         />
@@ -62,4 +125,11 @@ const styles = StyleSheet.create({
   deckTitle: { color: '#ffffff', fontSize: 15, fontWeight: '600' },
   date: { color: '#9a9ab0', fontSize: 12, marginTop: 2 },
   score: { color: '#7c5cff', fontSize: 18, fontWeight: 'bold' },
+  editInput: {
+    backgroundColor: '#28283c', borderRadius: 8, paddingHorizontal: 10,
+    paddingVertical: 4, color: '#fff', fontSize: 15, width: 60, textAlign: 'center',
+    borderWidth: 1, borderColor: '#7c5cff',
+  },
+  actionIcon: { paddingHorizontal: 6, paddingVertical: 4, marginLeft: 4 },
+  actionIconText: { fontSize: 16 },
 });
