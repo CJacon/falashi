@@ -73,4 +73,6 @@ Disciplina: Engenharia de Aplicações Móveis
 - Tela de novo cadastro
 <img width="1268" height="2756" alt="image" src="https://github.com/user-attachments/assets/6edaaafe-1f0a-4e8e-b384-117b9a3b28e2" />
 
+- Tela Principal ( Batalha ) 
+<img width="634" height="1378" alt="image" src="https://github.com/user-attachments/assets/7f91a119-efc7-47e2-bc9c-25d1e2a8745b" />
 
