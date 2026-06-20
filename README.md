@@ -81,3 +81,6 @@ Disciplina: Engenharia de Aplicações Móveis
 
 - Tela de Decks
 <img width="1268" height="2756" alt="image" src="https://github.com/user-attachments/assets/63456865-4a99-4f6e-91e2-14730c692ae4" />
+
+- Tela da Loja
+<img width="634" height="1378" alt="image" src="https://github.com/user-attachments/assets/186fe0d6-8236-4a5e-bfc0-b4271d39d99c" />
