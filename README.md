@@ -64,3 +64,10 @@ Pontifícia Universidade Católica de Minas Gerais (PUC Minas)
 Campus Poços de Caldas  
 Curso de Ciência da Computação  
 Disciplina: Engenharia de Aplicações Móveis
+
+## Telas do APP
+
+- Tela de Login
+<img width="1268" height="2756" alt="image" src="https://github.com/user-attachments/assets/a527ca76-80b5-49b4-a78c-8ddab886f824" />
+
+
