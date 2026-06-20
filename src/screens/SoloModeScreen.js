@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   TextInput,
   Alert,
   Platform,
+  Animated,
 } from 'react-native';
 import useDeckStore from '../store/useDeckStore';
 import { isAnswerCorrect } from '../utils/answerMatcher';
@@ -15,6 +16,9 @@ import { useSpeechRecognition } from '../services/speechService';
 export default function SoloModeScreen({ route, navigation }) {
   const { deckId } = route.params;
   const deck = useDeckStore((state) => state.getDeckById(deckId));
+  const equipped = useDeckStore((state) => state.equipped);
+  const getCatalogItem = useDeckStore((state) => state.getCatalogItem);
+  const deckSkin = getCatalogItem(equipped.deck);
 
   // Hook de reconhecimento de voz via WebView
   const { SpeechWebView, startListening, stopListening } = useSpeechRecognition();
@@ -26,6 +30,39 @@ export default function SoloModeScreen({ route, navigation }) {
   const [score, setScore] = useState(0);
   const [manualInput, setManualInput] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // ---------- ANIMAÇÕES ----------
+  const cardOpacity = useRef(new Animated.Value(1)).current;
+  const cardTranslateX = useRef(new Animated.Value(0)).current;
+  const feedbackScale = useRef(new Animated.Value(0.85)).current;
+  const feedbackOpacity = useRef(new Animated.Value(0)).current;
+
+  // Entrada inicial da tela
+  useEffect(() => {
+    cardOpacity.setValue(0);
+    cardTranslateX.setValue(20);
+    Animated.parallel([
+      Animated.timing(cardOpacity, { toValue: 1, duration: 300, useNativeDriver: true }),
+      Animated.timing(cardTranslateX, { toValue: 0, duration: 300, useNativeDriver: true }),
+    ]).start();
+  }, [currentIndex]);
+
+  // Quando o feedback aparece, faz um "pop" de escala + fade na caixa de resultado
+  useEffect(() => {
+    if (feedback) {
+      feedbackScale.setValue(0.85);
+      feedbackOpacity.setValue(0);
+      Animated.parallel([
+        Animated.spring(feedbackScale, {
+          toValue: 1,
+          friction: 6,
+          tension: 80,
+          useNativeDriver: true,
+        }),
+        Animated.timing(feedbackOpacity, { toValue: 1, duration: 200, useNativeDriver: true }),
+      ]).start();
+    }
+  }, [feedback]);
 
   if (!deck || deck.cards.length === 0) {
     return (
@@ -40,7 +77,6 @@ export default function SoloModeScreen({ route, navigation }) {
 
   const handleMicPress = async () => {
     if (isListening) {
-      // Parar escuta manualmente (caso o usuário queira interromper)
       stopListening();
       setIsListening(false);
       setLoading(false);
@@ -52,7 +88,6 @@ export default function SoloModeScreen({ route, navigation }) {
     setFeedback(null);
 
     try {
-      // startListening() retorna a transcrição assim que o usuário para de falar
       const transcript = await startListening();
       setSpokenText(transcript);
       checkAnswer(transcript);
@@ -80,18 +115,24 @@ export default function SoloModeScreen({ route, navigation }) {
   };
 
   const nextCard = () => {
-    setFeedback(null);
-    setSpokenText('');
-    setManualInput('');
-    if (isLastCard) {
-      navigation.replace('Result', {
-        score,
-        total: deck.cards.length,
-        deckId,
-      });
-    } else {
-      setCurrentIndex((i) => i + 1);
-    }
+    // Anima a saída da carta atual (fade + slide para a esquerda) antes de trocar
+    Animated.parallel([
+      Animated.timing(cardOpacity, { toValue: 0, duration: 180, useNativeDriver: true }),
+      Animated.timing(cardTranslateX, { toValue: -20, duration: 180, useNativeDriver: true }),
+    ]).start(() => {
+      setFeedback(null);
+      setSpokenText('');
+      setManualInput('');
+      if (isLastCard) {
+        navigation.replace('Result', {
+          score,
+          total: deck.cards.length,
+          deckId,
+        });
+      } else {
+        setCurrentIndex((i) => i + 1);
+      }
+    });
   };
 
   const micLabel = loading
@@ -109,15 +150,28 @@ export default function SoloModeScreen({ route, navigation }) {
         {currentIndex + 1} / {deck.cards.length}
       </Text>
 
-      <View style={styles.card}>
+      <Animated.View
+        style={[
+          styles.card,
+          { backgroundColor: deckSkin.cardColor, borderColor: deckSkin.borderColor },
+          {
+            opacity: cardOpacity,
+            transform: [{ translateX: cardTranslateX }],
+          },
+        ]}
+      >
         <Text style={styles.question}>{currentCard.question}</Text>
-      </View>
+      </Animated.View>
 
       {feedback && (
-        <View
+        <Animated.View
           style={[
             styles.feedbackBox,
             feedback === 'correct' ? styles.correctBox : styles.wrongBox,
+            {
+              opacity: feedbackOpacity,
+              transform: [{ scale: feedbackScale }],
+            },
           ]}
         >
           <Text style={styles.feedbackText}>
@@ -129,13 +183,17 @@ export default function SoloModeScreen({ route, navigation }) {
               Resposta certa: "{currentCard.answer}"
             </Text>
           )}
-        </View>
+        </Animated.View>
       )}
 
       {!feedback && (
         <>
           <TouchableOpacity
-            style={[styles.micButton, isListening && styles.micButtonActive]}
+            style={[
+              styles.micButton,
+              { backgroundColor: deckSkin.accentColor },
+              isListening && styles.micButtonActive,
+            ]}
             onPress={handleMicPress}
             disabled={loading && !isListening}
           >
@@ -163,7 +221,10 @@ export default function SoloModeScreen({ route, navigation }) {
       )}
 
       {feedback && (
-        <TouchableOpacity style={styles.nextButton} onPress={nextCard}>
+        <TouchableOpacity
+          style={[styles.nextButton, { backgroundColor: deckSkin.accentColor }]}
+          onPress={nextCard}
+        >
           <Text style={styles.nextButtonText}>
             {isLastCard ? 'Finalizar 🏁' : 'Próxima →'}
           </Text>
@@ -187,8 +248,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   card: {
-    backgroundColor: '#1c1c2e',
     borderRadius: 16,
+    borderWidth: 2,
     padding: 30,
     minHeight: 160,
     justifyContent: 'center',
@@ -202,7 +263,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   micButton: {
-    backgroundColor: '#7c5cff',
     paddingVertical: 18,
     borderRadius: 16,
     alignItems: 'center',
@@ -265,7 +325,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   nextButton: {
-    backgroundColor: '#7c5cff',
     paddingVertical: 16,
     borderRadius: 14,
     alignItems: 'center',

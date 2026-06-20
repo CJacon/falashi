@@ -1,19 +1,4 @@
-/**
- * firebase.js
- *
- * Inicialização do Firebase (Web SDK modular - funciona em Expo Go,
- * sem build nativo, sem custo no plano gratuito Spark).
- *
- * Observação: getAnalytics() não é usado aqui de propósito — o módulo de
- * Analytics do Firebase depende de APIs de navegador (window, document)
- * que não existem no React Native, e causaria erro ao importar.
- * Não precisamos de Analytics para o multiplayer funcionar.
- *
- * Lembrete: não habilite o plano Blaze (faturamento) neste projeto.
- * O Firestore no plano Spark é gratuito e mais que suficiente para o app.
- */
-
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -25,5 +10,11 @@ const firebaseConfig = {
   appId: '1:300998586552:web:a8ff64b693bd1450f7c44d',
 };
 
-const app = initializeApp(firebaseConfig);
+// Evita reinicializar o app (acontece com Fast Refresh do Expo Go)
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 export const db = getFirestore(app);
+
+// NOTA: este projeto não usa "firebase/auth". O pacote de Auth do Firebase
+// JS SDK não tem suporte estável em Expo Go (quebra com "Component auth has
+// not been registered yet"). Em vez disso, o login é feito de forma simples
+// via Firestore + sessão local — ver src/services/authService.js

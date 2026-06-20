@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import useDeckStore from '../store/useDeckStore';
 import { insertScore } from '../services/database';
+import FadeInView from '../components/FadeInView';
 
 export default function ResultScreen({ route, navigation }) {
   const { score, total, deckId } = route.params;
@@ -11,41 +12,73 @@ export default function ResultScreen({ route, navigation }) {
   const getDeckById = useDeckStore((state) => state.getDeckById);
   const [earned, setEarned] = useState(0);
 
+  const scoreScale = useRef(new Animated.Value(0.4)).current;
+  const scoreOpacity = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
     const deck = getDeckById(deckId);
     insertScore(deck?.title ?? 'Deck', score, total);
     awardCoins(score).then((amount) => setEarned(amount ?? 0));
+
+    Animated.parallel([
+      Animated.spring(scoreScale, {
+        toValue: 1,
+        friction: 5,
+        tension: 60,
+        delay: 150,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scoreOpacity, {
+        toValue: 1,
+        duration: 300,
+        delay: 150,
+        useNativeDriver: true,
+      }),
+    ]).start();
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Resultado</Text>
+      <FadeInView>
+        <Text style={styles.title}>Resultado</Text>
+      </FadeInView>
 
-      <View style={styles.scoreBox}>
+      <Animated.View
+        style={[
+          styles.scoreBox,
+          { opacity: scoreOpacity, transform: [{ scale: scoreScale }] },
+        ]}
+      >
         <Text style={styles.scoreValue}>{score}</Text>
         <Text style={styles.scoreTotal}>de {total}</Text>
-      </View>
+      </Animated.View>
 
-      <Text style={styles.percent}>{percent}% de acerto</Text>
+      <FadeInView delay={250}>
+        <Text style={styles.percent}>{percent}% de acerto</Text>
+      </FadeInView>
 
       {earned > 0 && (
-        <View style={styles.coinsEarned}>
-          <Text style={styles.coinsEarnedText}>+{earned} 🪙 ganhos!</Text>
-          <Text style={styles.coinsTotal}>Total: {coins} moedas</Text>
-        </View>
+        <FadeInView delay={350}>
+          <View style={styles.coinsEarned}>
+            <Text style={styles.coinsEarnedText}>+{earned} 🪙 ganhos!</Text>
+            <Text style={styles.coinsTotal}>Total: {coins} moedas</Text>
+          </View>
+        </FadeInView>
       )}
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SoloMode', { deckId })}>
-        <Text style={styles.buttonText}>Jogar de novo</Text>
-      </TouchableOpacity>
+      <FadeInView delay={450} style={{ width: '100%', alignItems: 'center' }}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SoloMode', { deckId })}>
+          <Text style={styles.buttonText}>Jogar de novo</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Ranking')}>
-        <Text style={styles.buttonText}>🏆 Ver Ranking</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Main', { screen: 'Ranking' })}>
+          <Text style={styles.buttonText}>🏆 Ver Ranking</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={[styles.button, styles.secondaryButton]} onPress={() => navigation.navigate('Home')}>
-        <Text style={styles.buttonText}>Voltar para Decks</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, styles.secondaryButton]} onPress={() => navigation.navigate('Main')}>
+          <Text style={styles.buttonText}>Voltar para Decks</Text>
+        </TouchableOpacity>
+      </FadeInView>
     </View>
   );
 }
