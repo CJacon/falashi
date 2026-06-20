@@ -82,7 +82,7 @@ export default function MultiplayerGameScreen({ route, navigation }) {
   const isLastCard = room.currentIndex === MULTIPLAYER_DECK.cards.length - 1;
   const me = room[playerKey];
   const opponent = room[opponentKey];
-  const opponentAnswered = room.lastAnswer && room.lastAnswer.player === opponentKey;
+  const opponentAnswered = room[`${opponentKey}Answered`] === true;
 
   const handleSubmit = async () => {
     if (!answer.trim() || hasAnsweredThisRound) return;
@@ -100,11 +100,7 @@ export default function MultiplayerGameScreen({ route, navigation }) {
     }
   };
 
-  const bothAnswered =
-    room.lastAnswer &&
-    ((room.lastAnswer.player === 'host' && room.guest && hasAnsweredThisRound && playerKey === 'guest') ||
-      (room.lastAnswer.player === 'guest' && room.host && hasAnsweredThisRound && playerKey === 'host') ||
-      (hasAnsweredThisRound && opponentAnswered));
+  const bothAnswered = room.hostAnswered && room.guestAnswered;
 
   return (
     <View style={styles.container}>
@@ -151,8 +147,14 @@ export default function MultiplayerGameScreen({ route, navigation }) {
               </Text>
             </TouchableOpacity>
           )}
+          {!opponentAnswered && playerKey === 'host' && (
+            <Text style={styles.waitingHint}>Aguardando o outro jogador...</Text>
+          )}
           {opponentAnswered && playerKey === 'guest' && (
             <Text style={styles.waitingHint}>Aguardando o host avançar...</Text>
+          )}
+          {!opponentAnswered && playerKey === 'guest' && (
+            <Text style={styles.waitingHint}>Aguardando o outro jogador...</Text>
           )}
         </View>
       )}

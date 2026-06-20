@@ -79,6 +79,7 @@ export async function submitAnswer(code, playerKey, correct, currentScore) {
 
   await updateDoc(roomRef, {
     [`${playerKey}.score`]: newScore,
+    [`${playerKey}Answered`]: true,
     lastAnswer: { player: playerKey, correct },
   });
 
@@ -90,6 +91,8 @@ export async function advanceQuestion(code, nextIndex) {
   await updateDoc(roomRef, {
     currentIndex: nextIndex,
     lastAnswer: null,
+    hostAnswered: false,
+    guestAnswered: false,
   });
 }
 
