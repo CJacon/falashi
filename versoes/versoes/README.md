@@ -11,6 +11,7 @@ Backups completos do projeto em cada etapa importante de desenvolvimento.
 | v15 | [falashi-v15-perfil.zip](./falashi-v15-perfil.zip) | Adiciona tela de perfil do jogador |
 | v20 | [falashi-v20-borda-baralho.zip](./falashi-v20-borda-baralho.zip) | Adiciona borda customizável no baralho, corrige bug do item equipado no banco |
 | v41 | [falashi-v41-crud-completo.zip](./falashi-v41-crud-completo.zip) | Adiciona CRUD completo (criar/editar/excluir) nas telas de Batalha e Ranking |
+| v41 (Atualizado) | ([falashi-v41-atualizado.zip](https://github.com/user-attachments/files/29164047/falashi-v41-atualizado.zip)) | Adiciona atualizção do multplayer |
 
 ---
 💡 Cada `.zip` é um snapshot completo do projeto naquele momento. Para restaurar uma versão antiga, baixe o zip e extraia em uma pasta separada.
