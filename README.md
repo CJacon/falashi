@@ -84,3 +84,6 @@ Disciplina: Engenharia de Aplicações Móveis
 
 - Tela da Loja
 <img width="634" height="1378" alt="image" src="https://github.com/user-attachments/assets/186fe0d6-8236-4a5e-bfc0-b4271d39d99c" />
+
+- Tela de Perfil
+<img width="634" height="1378" alt="image" src="https://github.com/user-attachments/assets/d80560ba-8019-4cf6-a6b9-f5e3c59573df" />
