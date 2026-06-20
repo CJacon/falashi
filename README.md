@@ -70,4 +70,7 @@ Disciplina: Engenharia de Aplicações Móveis
 - Tela de Login
 <img width="1268" height="2756" alt="image" src="https://github.com/user-attachments/assets/a527ca76-80b5-49b4-a78c-8ddab886f824" />
 
+- Tela de novo cadastro
+<img width="1268" height="2756" alt="image" src="https://github.com/user-attachments/assets/6edaaafe-1f0a-4e8e-b384-117b9a3b28e2" />
+
 
