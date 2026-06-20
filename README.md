@@ -78,3 +78,6 @@ Disciplina: Engenharia de Aplicações Móveis
 
 - Tela do Ranking 
 <img width="1268" height="2756" alt="image" src="https://github.com/user-attachments/assets/5c17a87e-b2bf-4a61-925a-719972f000dc" />
+
+- Tela de Decks
+<img width="1268" height="2756" alt="image" src="https://github.com/user-attachments/assets/63456865-4a99-4f6e-91e2-14730c692ae4" />
