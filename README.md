@@ -76,3 +76,5 @@ Disciplina: Engenharia de Aplicações Móveis
 - Tela Principal ( Batalha ) 
 <img width="634" height="1378" alt="image" src="https://github.com/user-attachments/assets/7f91a119-efc7-47e2-bc9c-25d1e2a8745b" />
 
+- Tela do Ranking 
+<img width="1268" height="2756" alt="image" src="https://github.com/user-attachments/assets/5c17a87e-b2bf-4a61-925a-719972f000dc" />
