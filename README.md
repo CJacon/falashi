@@ -69,12 +69,16 @@ Disciplina: Engenharia de Aplicações Móveis
 
 | Tela de Login | Tela de Novo Cadastro | Tela Principal (Batalha) |
 | :---: | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/a527ca76-80b5-49b4-a78c-8ddab886f824" width="220" alt="Tela de Login" /> | <img src="https://github.com/user-attachments/assets/6edaaafe-1f0a-4e8e-b384-117b9a3b28e2" width="220" alt="Tela de novo cadastro" /> | <img src="https://github.com/user-attachments/assets/7f91a119-efc7-47e2-bc9c-25d1e2a8745b" width="220" alt="Tela Principal (Batalha)" /> |
+| <img src="https://github.com/user-attachments/assets/a527ca76-80b5-49b4-a78c-8ddab886f824" width="220" alt="Tela de Login" /> | <img src="https://github.com/user-attachments/assets/6edaaafe-1f0a-4e8e-b384-117b9a3b28e2" width="220" alt="Tela de novo cadastro" /> | <img src="https://github.com/user-attachments/assets/7f91a119-efc7-47e2-bc9c-25d1e2a8745b" width="220" alt="Tela Principal" /> |
 
 | Tela do Ranking | Tela de Decks | Tela da Loja |
 | :---: | :---: | :---: |
 | <img src="https://github.com/user-attachments/assets/5c17a87e-b2bf-4a61-925a-719972f000dc" width="220" alt="Tela do Ranking" /> | <img src="https://github.com/user-attachments/assets/63456865-4a99-4f6e-91e2-14730c692ae4" width="220" alt="Tela de Decks" /> | <img src="https://github.com/user-attachments/assets/186fe0d6-8236-4a5e-bfc0-b4271d39d99c" width="220" alt="Tela da Loja" /> |
 
-| Tela de Perfil |
-| :---: |
-| <img src="https://github.com/user-attachments/assets/d80560ba-8019-4cf6-a6b9-f5e3c59573df" width="220" alt="Tela de Perfil" /> |
+| Tela de Perfil | Resultado | Modo Solo | 
+| :---: | :---: | :---: |
+| <img src="https://github.com/user-attachments/assets/d80560ba-8019-4cf6-a6b9-f5e3c59573df" width="220" alt="Tela de Perfil" /> | | |
+
+| Multiplayer | Batata Quente | Loja (ADM) | 
+| :---: | :---: | :---: |
+| | |
